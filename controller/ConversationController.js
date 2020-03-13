@@ -13,12 +13,10 @@ exports.send = (req, res) => {
 
 exports.getConversation = (req, res) => {
     let condition = [{to_id: req.body.to_id, from_id: req.body.from_id}, {from_id: req.body.to_id, to_id: req.body.from_id}];
-    console.log(condition);
     Conversation.find( {$or: condition}, (err, conv) => {
         if(err) {
             console.log(err);
         } else {
-            console.log(conv);
             res.status(200).send(conv);
         }
     }).sort({created_at: -1});

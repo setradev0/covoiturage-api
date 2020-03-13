@@ -1,13 +1,17 @@
 let express = require('express');
 let cors = require('cors');
 let bodyParser = require('body-parser');
-let server = express();
-server.use(bodyParser.urlencoded({extended: true}));
-server.use(bodyParser.json());
-server.use(bodyParser.json({type: 'application/vnd.api+json'}));
-server.use(cors());
+let app = express();
+let server = require('http').createServer(app);
+let io = require('socket.io').listen(server);
+require('./controller/SocketController')(io);
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(bodyParser.json({type: 'application/vnd.api+json'}));
+app.use(cors());
 let db = require('./config/db');
-require('./routes/user')(server);
+require('./routes/user')(app);
 
 db.once('open', _ => {
     console.log('mety');
