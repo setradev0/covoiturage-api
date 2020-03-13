@@ -1,7 +1,17 @@
 let User = require('../model/User');
 let bcrypt = require('bcryptjs');
 let jwt = require('jsonwebtoken');
+let Friends = require('../model/Friends');
 
+exports.getAllUser = (req, res) => {
+    User.find({}, (err, user) => {
+        if(err){
+            console.log(err);
+        }else{
+            return res.status(200).send(user);
+        }
+    });
+}
 
 exports.signup = (req, res) => {
     bcrypt.hash(req.body.password, 8, (err, hash) => {
@@ -49,6 +59,17 @@ exports.signin = (req, result) => {
                     });
                 }
             });
+        }
+    });
+}
+
+exports.addFriend = (req, res) => {
+    console.log(req.body);
+    Friends.create(req.body, (err, friend) => {
+        if(err) {
+            throw err;
+        } else {
+            res.status(200).send(req.body);
         }
     });
 }
