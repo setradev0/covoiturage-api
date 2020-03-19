@@ -2,6 +2,7 @@ let User = require('../model/User');
 let bcrypt = require('bcryptjs');
 let jwt = require('jsonwebtoken');
 let Friends = require('../model/Friends');
+let config = require('../config/.env');
 
 exports.getAllUser = (req, res) => {
     User.find({}, (err, user) => {
@@ -42,7 +43,7 @@ exports.signin = (req, result) => {
         } else {
             bcrypt.compare(req.body.password, res[0].password).then(bool => {
                 if(bool) {
-                    jwt.sign({user: res[0]}, 'fjkdlsmqjfdklsmqjfk4121', {algorithm: 'none'}, (err, token) => {
+                    jwt.sign({user: res[0]}, config.jwt_secret, (err, token) => {
                         if(err) {
                             throw err;
                         } else {

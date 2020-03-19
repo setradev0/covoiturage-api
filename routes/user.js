@@ -1,12 +1,13 @@
 let controller = require('../controller/UserController');
 let conversation = require('../controller/ConversationController');
+let authUser = require('../middleware/jwtToken');
 
 let route = (app) => {
     app.post('/signup', controller.signup);
     app.post('/signin', controller.signin);
     app.post('/send-message', conversation.send);
     app.post('/add-friend', controller.addFriend);
-    app.get('/get-all-user', controller.getAllUser);
+    app.get('/get-all-user', authUser, controller.getAllUser);
     app.post('/get-conversation', conversation.getConversation);
 }
 
