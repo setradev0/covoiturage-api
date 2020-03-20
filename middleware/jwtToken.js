@@ -13,14 +13,13 @@ const authUser = async (req, res, next) => {
 
     jwt.verify(token, config.jwt_secret, (err, decoded) => {
         if(err) {
-            console.log(err);
             return res.status(401).json({
                 error : [{
                     msg : 'Invalid Token'
                 }]
             });
         }
-
+        req.decoded = decoded;
         return next();
     });
 }

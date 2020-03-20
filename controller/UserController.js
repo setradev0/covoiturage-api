@@ -5,20 +5,12 @@ let Friends = require('../model/Friends');
 let config = require('../config/.env');
 
 exports.getAllUser = (req, res) => {
-    let token = req.headers['x-access-token'];
-    jwt.verify(token, config.jwt_secret, (err, payload) => {
-        if(err) {
-            throw err;
-        } else {
-            console.log(payload.user);
-            let user = payload.user;
-            User.find({_id: { $ne: user._id }}, (err, user) => {
-                if(err){
-                    console.log(err);
-                }else{
-                    return res.status(200).send(user);
-                }
-            });
+    let user = req.decoded.user;
+    User.find({_id: { $ne: user._id }}, (err, user) => {
+        if(err){
+            console.log(err);
+        }else{
+            return res.status(200).send(user);
         }
     });
 }

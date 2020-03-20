@@ -1,11 +1,11 @@
 let socket = (io) => {
-    io.on('connection', socket => {
-        console.log('connecté');
-        socket.on('message', (message) => {
-            console.log(message);
-            io.emit('message', message);
+        io.on('authenticated', (socket) => {
+            let currentUser = socket.decoded_token.user;
+            socket.on('message', (message) => {
+                io.emit('message', message);
+            });
         });
-    });
+        
 }
 
 module.exports = socket;
